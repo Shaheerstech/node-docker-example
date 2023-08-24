@@ -1,12 +1,14 @@
 pipeline {
-    agent {
-        docker {
-            image 'jenkins/jenkins:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any // You can use "any" agent type here
+
     stages {
         stage('Build and Push Docker Image') {
+            agent {
+                docker {
+                    image 'jenkins/jenkins:latest'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
             steps {
                 script {
                     // Build Docker image
