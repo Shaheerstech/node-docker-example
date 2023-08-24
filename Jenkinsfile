@@ -18,7 +18,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerImage = docker.build("${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_TAG}", "-f Dockerfile .")
+                    def dockerImage = docker.build("${env.$HOME}:${env.node_docker}", "-f Dockerfile .")
                 }
             }
         }
@@ -26,7 +26,7 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('', "${DOCKER_HUB_CREDENTIALS}") {
+                    docker.withRegistry('', "${Shaheerahmed123}") {
                         dockerImage.push()
                     }
                 }
