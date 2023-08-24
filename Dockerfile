@@ -1,3 +1,5 @@
+FROM alpine:3.13.5
+
 FROM node:12.2
 
 ENV HOME=/home/app
