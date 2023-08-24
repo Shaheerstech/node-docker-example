@@ -1,45 +1,32 @@
 pipeline {
     agent any
-
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+    }
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('shaheerahmed123') // You need to set up Docker Hub credentials in Jenkins
-        GITHUB_REPO_URL = 'https://github.com/shaheerstech/https://github.com/Shaheerstech/node-docker-example.git'
-        DOCKER_IMAGE_NAME = 'node'
-        DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}"
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+        IMAGE_NAME = 'lloydmatereke/jenkins-docker-hub'
     }
-
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: "${env.GITHUB_REPO_URL}"]]])
+                sh 'docker build -t ${env.node} .'
             }
         }
-
-        stage('Build Docker Image') {
+        stage('Login') {
             steps {
-                script {
-                    def dockerImage = docker.build("${env.$HOME}:${env.node_docker}", "-f Dockerfile .")
-                }
+                sh "echo \$DOCKERHUB_CREDENTIALS_PSW | docker login -u \$DOCKERHUB_CREDENTIALS_USR --password-stdin"
             }
         }
-
-        stage('Push to Docker Hub') {
+        stage('Push') {
             steps {
-                script {
-                    docker.withRegistry('', "${Shaheerahmed123}") {
-                        dockerImage.push()
-                    }
-                }
+                sh "docker push ${env.node}"
             }
         }
     }
-
     post {
-        success {
-            echo 'Docker image built and pushed successfully.'
-        }
-        failure {
-            echo 'Docker image build and/or push failed.'
+        always {
+            sh 'docker logout'
         }
     }
 }
