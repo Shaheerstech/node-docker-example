@@ -5,7 +5,7 @@ pipeline {
     }
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-        IMAGE_NAME = 'lloydmatereke/jenkins-docker-hub'
+        IMAGE_NAME = 'node'
     }
     stages {
         stage('Build') {
