@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('shaheerahmed123') // You need to set up Docker Hub credentials in Jenkins
         GITHUB_REPO_URL = 'https://github.com/shaheerstech/https://github.com/Shaheerstech/node-docker-example.git'
-        DOCKER_IMAGE_NAME = '$HOME/node_docker'
+        DOCKER_IMAGE_NAME = 'node'
         DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}"
     }
 
